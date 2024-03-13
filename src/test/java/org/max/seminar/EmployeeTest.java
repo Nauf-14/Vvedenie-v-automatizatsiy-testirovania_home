@@ -38,5 +38,15 @@ public class EmployeeTest extends AbstractTest {
         EmployeeEntity employeeEntity = (EmployeeEntity) query.uniqueResult();
         //then
         Assertions.assertEquals(portion, employeeEntity.getPortion());
+        String sql = "SELECT * FROM employee" + " where employee_id=" + id;
+        Statement stmt  = getConnection().createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+//        Assertions.assertEquals(2,rs.getFetchSize());
+        while (rs.next()) {
+            Assertions.assertAll(
+                    ()->Assertions.assertEquals(portion, rs.getString(5)),
+                    ()->Assertions.assertEquals(portion, rs.getString("portion"))
+            );
+        }
     }
 }
